@@ -25,9 +25,9 @@ public class Calculator {
 	private final static double PI = 3.1415926535897932384626433832795028841971693993751;
 	
 	// main method to set up expression to calculate. Expression must be all surrounded in parenthesis.
-	public static void main(String[] args) {
+	public static String getAnswer(String input) {
 
-		expression = "((2 + 2)(3 / 4))";
+		expression = "(" + input + ")";
 		expression = toCalculatable(expression);
 		paren();
 		
@@ -36,7 +36,7 @@ public class Calculator {
 			expression = numberToString((new BigDecimal(expression).setScale(SCALE_SET-1, BigDecimal.ROUND_HALF_UP)));
 		
 		// displays answer
-		System.out.println(expression);
+		return expression;
 
 	}
 	
