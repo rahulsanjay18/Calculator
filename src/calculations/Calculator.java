@@ -1,10 +1,11 @@
+package calculations;
 
 
 
 import java.math.BigDecimal;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-//tester calc
+
 public class Calculator {
 
 	private static String expression;
