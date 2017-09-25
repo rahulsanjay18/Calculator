@@ -233,7 +233,7 @@ public class Calculator {
 	private static BigDecimal functionEval(BigDecimal number, String func) {
 		double answer = 0;
 		double angle = number.doubleValue();
-		
+		// for when degree conversion is implemented
 		if(!isitRadians)
 			angle = angle * PI / 180;
 		
