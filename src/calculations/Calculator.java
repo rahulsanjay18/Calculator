@@ -16,7 +16,7 @@ public class Calculator {
 
 	private static String regex = "[\\+\\−×/^√]";// Uses − instead of - (−/-) and × instead of x (×/x)
 
-	public static boolean isitRadians = false;
+	private static boolean isitRadians;
 	
 	private final static String[] FUNCTIONS = {"sin","cos","tan","csc","sec","cot"};
 
@@ -25,7 +25,10 @@ public class Calculator {
 	private final static double PI = 3.1415926535897932384626433832795028841971693993751;
 	
 	// main method to set up expression to calculate. Expression must be all surrounded in parenthesis.
-	public static String getAnswer(String input) {
+	public static String getAnswer(String input, boolean rad) {
+		// used for a placeholder for radian to degree conversions
+		rad = false;
+		isitRadians = rad;
 
 		expression = "(" + input + ")";
 		expression = toCalculatable(expression);
@@ -41,22 +44,22 @@ public class Calculator {
 	}
 	
 	// converts string to something the calculator can calculate
-	private static String toCalculatable(String orig) {
-		
-		String toConvert = orig;
-		
+	private static String toCalculatable(String toConvert){
+		toConvert = toConvert.replaceAll("\\)\\(", "\\)×\\(");
+
 		Pattern p = Pattern.compile("[0-9][\\(a-z]");
 		Matcher m = p.matcher(toConvert);
-		
+
 		while(m.find()) {
 			String found = toConvert.substring(m.start(), m.end());
-			
+
 			if(found.contains("("))
 				found = found.substring(0, found.indexOf("(")) + "\\" + found.substring(found.indexOf("("));
-			
+
 			toConvert = toConvert.replaceAll(found, found.charAt(0) + "×" + found.charAt(found.length() - 1));
 		}
-		
+
+
 		return toConvert;
 	}
 
@@ -87,15 +90,15 @@ public class Calculator {
 		}
 	}
 
-	public static String eval(String equation) {
+	private static String eval(String equation) {
 
 		equation = equation.replaceAll("", "");
 		String parts[] = createArrayParts(equation);
-		String origEquation = new String(equation);
+		String origEquation = equation;
 
 		for(String func : FUNCTIONS){
 
-			while(equation.indexOf(func) != -1){
+			while(equation.contains(func)){
 				int funcIndex = findIndexOf(parts, func);
 
 				String part = parts[funcIndex];
@@ -169,7 +172,7 @@ public class Calculator {
 			int addIndex = findIndexOf(parts, "+");
 			int subIndex = findIndexOf(parts, "−");
 			BigDecimal number3;
-			if(subIndex < 0 || (addIndex > 0 && addIndex < subIndex)){;
+			if(subIndex < 0 || (addIndex > 0 && addIndex < subIndex)){
 			BigDecimal number1 = BigDecimal.valueOf(Double.parseDouble(parts[addIndex - 1]));
 			BigDecimal number2 = BigDecimal.valueOf(Double.parseDouble(parts[addIndex + 1]));
 			number3 = number1.add(number2);
@@ -189,7 +192,7 @@ public class Calculator {
 		return expression.replace("("+ origEquation + ")", "" + equation);
 	}
 
-	public static int findIndexOf(String  parts[], String part) {
+	private static int findIndexOf(String  parts[], String part) {
 		if (part.length() == 1) {
 			for (int i = 0; i < parts.length; i++) {
 				if (parts[i].equals(part)) {
@@ -206,7 +209,7 @@ public class Calculator {
 		return -1;
 	}
 
-	public static String[] createArrayParts(String equation) {
+	private static String[] createArrayParts(String equation) {
 		String part = "";
 		String equationParts[] = new String[equation.replaceAll(" ", "").replaceAll(regex, "` `").split("`").length];
 		int j = 0;
@@ -265,11 +268,11 @@ public class Calculator {
 		return BigDecimal.ZERO;
 	}
 
-	public static BigDecimal sqrt(BigDecimal num) {
+	private static BigDecimal sqrt(BigDecimal num) {
 		return BigDecimal.valueOf(Math.sqrt(num.doubleValue()));
 	}
 
-	public static String numberToString(BigDecimal number) {
+	private static String numberToString(BigDecimal number) {
 		return number.setScale(SCALE_SET, BigDecimal.ROUND_FLOOR).stripTrailingZeros().toPlainString().trim();
 	}
 }
