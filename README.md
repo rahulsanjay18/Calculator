@@ -1,6 +1,3 @@
-# Browse Other Projects:
-
-
 # Goals:
 * To create a functional calculator
 * Read in a string and use that to output an answer
