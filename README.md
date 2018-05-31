@@ -16,5 +16,6 @@
 - [ ] Handle Complex numbers
 - [ ] Port to C
 
-
-
+# Branches:
+### Algebra
+A basic computer algebra system that can evaluate simple expressions
